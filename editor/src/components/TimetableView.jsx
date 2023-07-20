@@ -1,89 +1,52 @@
-import { addStop } from "../data/timetable"
+import TimeTableHeader from "./TimeTableHeader"
+import TimeTableTimes from "./TimeTableTimes"
 import ExpandingNewBox from "./ExpandingNewBox"
-import { useState, useRef } from "react"
+import { useCurrentTt, useStore } from "../store"
+import { addStop, appendService } from "../timetable"
+import { ConfirmProvider } from "./ConfirmCtx"
 
-const StopHeadItem = ({ idx, onEdit, children }) => {
-  const [editState, setEditState] = useState(false)
-  const [width, setWidth] = useState(null)
-  const cellRef = useRef(null)
-  const inputRef = useRef(null)
+const TimetableView = () => {
+  const timetable = useCurrentTt()
+  const updateThisTt = useStore((st) => st.updateThisTt)
 
-  const enterEditState = () => {
-    if (cellRef.current) {
-      setWidth(cellRef.current.offsetWidth)
-    }
-    setEditState(true)
+  const onAddService = () => {
+    updateThisTt(appendService(timetable))
   }
 
-  const onSubmit = () => {}
+  const onExport = () => {
+    const exported = JSON.stringify(timetable)
+    const anchor = document.createElement("a")
+    anchor.href = URL.createObjectURL(
+      new Blob([exported], { type: "text/json" })
+    )
+    anchor.download = timetable.name + ".json"
+    anchor.click()
+  }
 
   return (
-    <th ref={cellRef} className="border border-black px-[1ch]">
-      {!editState ? (
-        <button type="button" onClick={enterEditState}>
-          {children}
+    <>
+      <ConfirmProvider message="really delete? this will delete all times for this stop as well.">
+        <div className="border-r border-black timetable-table">
+          <TimeTableHeader />
+          <TimeTableTimes />
+        </div>
+      </ConfirmProvider>
+      <div className="flex gap-x-1">
+        <ExpandingNewBox
+          onNew={(name) => updateThisTt(addStop(timetable, name))}
+        >
+          <span className="text-blue-600">
+            <i className="bi-pin-map-fill"></i> add stop
+          </span>
+        </ExpandingNewBox>
+        <button type="button" onClick={onAddService} className="text-blue-600">
+          <i className="bi-clock"></i> add service
         </button>
-      ) : (
-        <form onSubmit={(ev) => ev.preventDefault()}>
-          <input type="text" style={{ width: `calc(${width}px - 2ch)` }} />
-          <button type="submit">
-            <i className="bi-arrow-return-left"></i>
-          </button>
-        </form>
-      )}
-    </th>
-  )
-}
-
-const TimeTableHeader = ({ stops, onNew }) => {
-  return (
-    <thead className="bg-slate-200">
-      <tr>
-        {stops.length != 0 ? (
-          stops.map((stop, i) => (
-            <StopHeadItem key={i} idx={i}>
-              {stop}
-            </StopHeadItem>
-          ))
-        ) : (
-          <th className="border border-black">no stops yet</th>
-        )}
-        <th className="border border-black">
-          <ExpandingNewBox
-            onNew={onNew}
-            initialText={
-              <span className="text-blue-600 underline">add stop</span>
-            }
-          />
-        </th>
-      </tr>
-    </thead>
-  )
-}
-
-const TimetableView = ({ timetable, onUpdate }) => {
-  const onClickAddStop = (name) => {
-    timetable = addStop(timetable, name)
-    onUpdate(timetable)
-  }
-
-  return (
-    <div>
-      <button type="button">export</button>
-      <table>
-        <TimeTableHeader stops={timetable.stops} onNew={onClickAddStop} />
-        <tbody>
-          <tr>
-            {timetable.stops.map((_, idx) => (
-              <td key={idx} className="border border-black">
-                something
-              </td>
-            ))}
-            <td className="border border-black"></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <button type="button" onClick={onExport} className="text-blue-600">
+          <i className="bi-download"></i> export to JSON
+        </button>
+      </div>
+    </>
   )
 }
 

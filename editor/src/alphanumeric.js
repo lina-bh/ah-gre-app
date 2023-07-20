@@ -10,4 +10,6 @@ const alphanumeric = (c) => {
   return true
 }
 
+const numeric = (c) => {}
+
 export default alphanumeric
