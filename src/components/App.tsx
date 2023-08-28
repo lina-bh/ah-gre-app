@@ -1,5 +1,3 @@
-import { TwitterTimelineEmbed } from "react-twitter-embed"
-
 import DirectionTabs from "./DirectionTabs"
 import InformationModal from "./InformationModal"
 import TimetableView from "./TimetableView"

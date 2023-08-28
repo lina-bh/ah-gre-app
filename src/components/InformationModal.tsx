@@ -1,6 +1,11 @@
-import { useState, MouseEvent } from "react"
+import { useState, MouseEvent, ReactNode } from "react"
 
-export default function InformationModal(props) {
+interface InformationModal {
+  className: string
+  children: ReactNode
+}
+
+export default function InformationModal(props: InformationModal) {
   const [modalVisible, setModalVisible] = useState(false)
 
   const onOpen = (ev: MouseEvent) => {
