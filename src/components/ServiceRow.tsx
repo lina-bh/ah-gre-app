@@ -12,11 +12,12 @@ function formatTime(date: Date) {
 
 export default function ServiceRow(props: ServiceRowProps) {
   return (
-    <div className="flex justify-between">
-      <p className="text-3xl">{formatTime(props.time)}</p>
-      <div className="mt-auto text-right">
+    <div className="flex justify-between tabular-nums">
+      <p className="my-auto text-4xl">{formatTime(props.time)}</p>
+      <div className="mb-auto text-right">
         {props.distance && "in " + formatDistanceToNow(props.time)}
-        <p>Arrives {formatTime(props.arrives)}</p>
+        <p>Arrives</p>
+        <p>{formatTime(props.arrives)}</p>
       </div>
     </div>
   )

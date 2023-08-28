@@ -34,42 +34,45 @@ export default function TimetableView() {
   }, [direction])
 
   useEffect(() => {
-    const timer = setInterval(() => refreshTime())
+    const timer = setInterval(() => refreshTime(), 90000)
     return () => clearInterval(timer)
   }, [])
 
   return (
-    <div className="px-1">
+    <>
       <StopMenu
         stops={stops.slice(0, -1)}
         {...{ selectedStop, setSelectedStop }}
       />
-
-      {nextServiceIndex !== END_OF_SERVICE ? (
-        <div>
-          <h2 className="text-2xl">
-            Next uni bus in {formatDistanceToNow(nextService[selectedStop])}{" "}
-            <button onClick={refreshTime} className="inline">
-              <i className="bi bi-arrow-clockwise"></i>
-            </button>
-          </h2>
-          <ServiceRow
-            time={nextService[selectedStop]}
-            arrives={arrivesTime(nextService)}
-          />
-          <h2 className="text-xl">Following buses:</h2>
-          {times.slice(nextServiceIndex + 1).map((service, i) => (
-            <div key={i} className="pt-[0.5em]">
+      <div className="px-1">
+        {nextServiceIndex !== END_OF_SERVICE ? (
+          <div>
+            <div className="border-b dark:border-gray-800">
+              <h2 className="text-2xl">
+                Next uni bus in {formatDistanceToNow(nextService[selectedStop])}{" "}
+                <button onClick={refreshTime} className="inline">
+                  <i className="bi bi-arrow-clockwise"></i>
+                </button>
+              </h2>
               <ServiceRow
-                time={service[selectedStop]}
-                arrives={arrivesTime(service)}
+                time={nextService[selectedStop]}
+                arrives={arrivesTime(nextService)}
               />
             </div>
-          ))}
-        </div>
-      ) : (
-        "End of service."
-      )}
-    </div>
+            <h2 className="pt-2 text-xl">Following buses:</h2>
+            {times.slice(nextServiceIndex + 1).map((service, i) => (
+              <div key={i} className="py-1 border-b dark:border-gray-800">
+                <ServiceRow
+                  time={service[selectedStop]}
+                  arrives={arrivesTime(service)}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          "End of service."
+        )}
+      </div>
+    </>
   )
 }

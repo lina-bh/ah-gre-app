@@ -3,3 +3,13 @@
 /*
 @tailwind components;
 */
+
+body {
+  @apply dark:bg-black dark:text-white;
+}
+
+html,
+body,
+#root {
+  @apply h-full;
+}

@@ -37,9 +37,9 @@ export const reducedNorth = createTimetable({
 })
 export const reducedSouth = createTimetable({
   stops: [
-    "Greenwich Campus",
+    "Queen Anne Court",
     "Eltham Station",
-    "Eltham High Street",
+    "Eltham High Street (stop L)",
     "Avery Hill",
   ],
   times: [

@@ -26,7 +26,7 @@ const DirectionTabs = () => {
           />
           <label
             htmlFor={`${name}Tab`}
-            className="block text-center w-full border-b-[6px] border-gray-400 peer-checked:border-gre-blue py-2 transition-colors duration-300"
+            className="block w-full py-2 text-center text-white transition-colors duration-300 bg-gray-400 cursor-pointer peer-checked:bg-gre-blue"
           >
             towards <strong>{name}</strong>
           </label>

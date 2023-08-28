@@ -4,16 +4,16 @@
     {
       "name": "editor debug server",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev", "--host", "0.0.0.0"],
       "type": "node",
       "cwd": "${workspaceFolder}/editor"
     },
     {
       "name": "app debug server",
       "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev", "--host", "0.0.0.0"],
       "type": "node",
       "cwd": "${workspaceFolder}"
     }
