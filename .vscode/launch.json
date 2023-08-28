@@ -8,6 +8,14 @@
       "runtimeArgs": ["run", "dev"],
       "type": "node",
       "cwd": "${workspaceFolder}/editor"
+    },
+    {
+      "name": "app debug server",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "type": "node",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
