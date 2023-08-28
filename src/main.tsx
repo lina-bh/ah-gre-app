@@ -7,7 +7,13 @@ import App from "./components/App.tsx"
 import { store } from "./store.ts"
 import "./index.css"
 
-createRoot(document.getElementById("root")!).render(
+if (import.meta.env.MODE === "development") {
+  await import("./debug-tools.ts")
+}
+
+const root = createRoot(document.getElementById("root")!)
+
+root.render(
   <StrictMode>
     <Provider store={store}>
       <App />

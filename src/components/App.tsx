@@ -1,9 +1,10 @@
 import DirectionTabs from "./DirectionTabs"
 import InformationModal from "./InformationModal"
 import TimetableView from "./TimetableView"
+import BusStopMenu from "./BusStopMenu"
+import Footer from "./Footer"
 
 const App = () => {
-  // const [direction, setDirection] = useState(NORTHBOUND)
   return (
     <main className="flex flex-col h-full">
       <div className="flex justify-between px-2 py-1">
@@ -13,25 +14,12 @@ const App = () => {
         </InformationModal>
       </div>
       <DirectionTabs />
-      <TimetableView />
+      <BusStopMenu />
+      <div className="px-1">
+        <TimetableView />
+      </div>
       <div className="px-2 pb-1 mt-auto">
-        <p className="">
-          Check{" "}
-          <a
-            href="https://twitter.com/UOGBuses"
-            className="text-blue-500 dark:text-blue-400"
-          >
-            <i className="bi bi-twitter"></i>{" "}
-            <span className="underline">@UOGBuses</span>
-          </a>{" "}
-          and{" "}
-          <a
-            href="https://bustracker.gre.ac.uk"
-            className="text-blue-500 underline dark:text-blue-400"
-          >
-            official website
-          </a>
-        </p>
+        <Footer />
       </div>
     </main>
   )

@@ -1,25 +1,44 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
+import {
+  createSlice,
+  type PayloadAction,
+  createSelector,
+} from "@reduxjs/toolkit"
+import { RootState } from "../store"
+import { reducedNorth, reducedSouth } from "../timetable-type"
 
-export const NORTHBOUND = true
-export const SOUTHBOUND = false
 export type Direction = boolean
+export const NORTHBOUND = false
+export const SOUTHBOUND = true
 
 interface DirectionState {
-  value: Direction
+  southbound: boolean
+  currentStop: number
 }
 
 const directionSlice = createSlice({
   name: "direction",
   initialState: {
-    value: NORTHBOUND,
+    southbound: false,
+    currentStop: 0,
   } as DirectionState,
   reducers: {
-    setDirection: (state, action: PayloadAction<Direction>) => {
-      state.value = action.payload
+    changeOfDirection: (state, action: PayloadAction<Direction>) => {
+      state.southbound = action.payload
+    },
+    changeOfStop: (state, action: PayloadAction<number>) => {
+      state.currentStop = action.payload
     },
   },
 })
 
-export const { setDirection } = directionSlice.actions
+export const { changeOfDirection, changeOfStop } = directionSlice.actions
 
 export default directionSlice.reducer
+
+const selectSouthbound = (state: RootState) => state.direction.southbound
+export const selectCurrentTimetable = createSelector(
+  [selectSouthbound],
+  (southbound) => {
+    return southbound ? reducedSouth : reducedNorth
+  }
+)

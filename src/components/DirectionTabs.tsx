@@ -1,16 +1,27 @@
 import { useDispatch } from "react-redux"
 
 import { useSelector } from "../store"
-import { setDirection, NORTHBOUND, SOUTHBOUND } from "../reducers/direction"
+import {
+  NORTHBOUND,
+  SOUTHBOUND,
+  Direction,
+  changeOfDirection,
+  changeOfStop,
+} from "../reducers/direction"
+
+const options = [
+  { thisDirection: NORTHBOUND, name: "Greenwich" },
+  { thisDirection: SOUTHBOUND, name: "Avery Hill" },
+]
 
 const DirectionTabs = () => {
-  const direction = useSelector((state) => state.direction.value)
+  const direction = useSelector((state) => state.direction.southbound)
   const dispatch = useDispatch()
 
-  const options = [
-    { thisDirection: NORTHBOUND, name: "Greenwich" },
-    { thisDirection: SOUTHBOUND, name: "Avery Hill" },
-  ]
+  const onChangeStop = (direction: Direction) => {
+    dispatch(changeOfDirection(direction))
+    dispatch(changeOfStop(0))
+  }
 
   return (
     <div className="flex">
@@ -21,7 +32,7 @@ const DirectionTabs = () => {
             name={`${name}Tab`}
             type="radio"
             checked={direction === thisDirection}
-            onChange={() => dispatch(setDirection(thisDirection))}
+            onChange={() => onChangeStop(thisDirection)}
             className="hidden peer"
           />
           <label
