@@ -66,7 +66,7 @@ jobs:
         run: pnpm install -w
 
       - name: Build site
-        run: pnpm build
+        run: pnpm build --base lina-bh.github.io/ah-gre-app
 
       - name: Upload
         uses: actions/upload-pages-artifact@v2
