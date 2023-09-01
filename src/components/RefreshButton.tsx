@@ -1,15 +1,16 @@
 import { ComponentPropsWithoutRef } from "react"
-import { useDispatch } from "react-redux"
 
-import { timeRefreshed } from "../reducers/time"
+import { useStore } from "../zustand-store"
 
 export default function RefreshButton(
   props: ComponentPropsWithoutRef<"button">
 ) {
-  const dispatch = useDispatch()
+  const timeRefreshed = useStore((state) => state.timeRefreshed)
+
   const onClick = () => {
-    dispatch(timeRefreshed())
+    timeRefreshed()
   }
+
   return (
     <button {...props} onClick={onClick}>
       <i className="bi bi-arrow-clockwise"></i>

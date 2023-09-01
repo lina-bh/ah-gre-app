@@ -1,5 +1,4 @@
-import { store } from "./store.ts"
-import { debugChangeTheDate } from "./reducers/time.ts"
+import { useStore } from "./zustand-store"
 
 declare global {
   interface Window {
@@ -8,5 +7,5 @@ declare global {
 }
 
 window.changeTheDate = (date: Date) => {
-  store.dispatch(debugChangeTheDate(JSON.stringify(date)))
+  useStore.setState({ time: JSON.stringify(date) })
 }

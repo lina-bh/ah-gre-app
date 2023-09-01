@@ -1,16 +1,15 @@
-import { useDispatch } from "react-redux"
 import { ChangeEvent } from "react"
 
-import { useSelector } from "../store"
-import { changeOfStop, selectCurrentTimetable } from "../reducers/direction"
+import { useCurrentTimetable, useStore } from "../zustand-store"
 
 export default function BusStopMenu() {
-  const currentStop = useSelector((state) => state.direction.currentStop)
-  const timetable = useSelector(selectCurrentTimetable)
-  const dispatch = useDispatch()
+  const currentStop = useStore((state) => state.stop)
+  const stopChanged = useStore((state) => state.stopChanged)
+  const timetable = useCurrentTimetable()
 
   const onChangeStop = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeOfStop(parseInt(event.target.value, 10)))
+    const stop = parseInt(event.target.value, 10)
+    stopChanged(stop)
   }
 
   const stops = timetable.stops.slice(0, -1)

@@ -1,9 +1,4 @@
-import { parse, isBefore } from "date-fns"
-
-export interface Timetable {
-  stops: string[]
-  times: string[][]
-}
+import { type Timetable } from "./interface"
 
 export enum Stop {
   AH = "Avery Hill",
@@ -43,44 +38,4 @@ export const reducedSouth: Timetable = {
     ["1715", "1735", "1737", "1740"],
     ["1800", "1820", "1822", "1825"],
   ],
-}
-
-export const END_OF_SERVICE = null
-
-function parseTime(time: string, refDate: Date): Date {
-  return parse(time, "HHmm", refDate)
-}
-
-export function getBusService(
-  timetable: Timetable,
-  index: number,
-  currentTime: Date
-): Date[] {
-  return timetable.times[index].map((time) => parseTime(time, currentTime))
-}
-
-export function getBusServicesAfter(
-  timetable: Timetable,
-  startIndex: number,
-  currentTime: Date
-): Date[][] {
-  return timetable.times
-    .slice(startIndex)
-    .map((times) => times.map((time) => parseTime(time, currentTime)))
-}
-
-export function findNextService(
-  timetable: Timetable,
-  stop: number,
-  time: Date
-): number | null {
-  const times = timetable.times.map(
-    (service) => () => parseTime(service[stop], time)
-  )
-  for (let i = 0; i < times.length; i++) {
-    if (isBefore(time, times[i]())) {
-      return i
-    }
-  }
-  return null
 }
