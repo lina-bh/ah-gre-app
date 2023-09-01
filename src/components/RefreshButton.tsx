@@ -1,10 +1,6 @@
-import { ComponentPropsWithoutRef } from "react"
-
 import { useStore } from "../zustand-store"
 
-export default function RefreshButton(
-  props: ComponentPropsWithoutRef<"button">
-) {
+export default function RefreshButton() {
   const timeRefreshed = useStore((state) => state.timeRefreshed)
 
   const onClick = () => {
@@ -12,7 +8,7 @@ export default function RefreshButton(
   }
 
   return (
-    <button {...props} onClick={onClick}>
+    <button onClick={onClick}>
       <i className="bi bi-arrow-clockwise"></i>
     </button>
   )

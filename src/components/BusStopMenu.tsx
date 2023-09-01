@@ -1,5 +1,3 @@
-import { ChangeEvent } from "react"
-
 import { useCurrentTimetable, useStore } from "../zustand-store"
 
 export default function BusStopMenu() {
@@ -7,7 +5,7 @@ export default function BusStopMenu() {
   const stopChanged = useStore((state) => state.stopChanged)
   const timetable = useCurrentTimetable()
 
-  const onChangeStop = (event: ChangeEvent<HTMLSelectElement>) => {
+  const onChangeStop = (event) => {
     const stop = parseInt(event.target.value, 10)
     stopChanged(stop)
   }

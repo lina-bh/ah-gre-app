@@ -1,4 +1,4 @@
-import { useState, MouseEvent, ReactNode } from "react"
+import { useState, ReactNode } from "react"
 
 interface InformationModal {
   className: string
@@ -8,8 +8,8 @@ interface InformationModal {
 export default function InformationModal(props: InformationModal) {
   const [modalVisible, setModalVisible] = useState(false)
 
-  const onOpen = (ev: MouseEvent) => {
-    ev.preventDefault()
+  const onOpen = (event) => {
+    event.preventDefault()
     setModalVisible(true)
   }
 
