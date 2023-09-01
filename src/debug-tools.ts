@@ -1,4 +1,4 @@
-import { useStore } from "./zustand-store"
+// import { useStore } from "./zustand-store"
 
 declare global {
   interface Window {
@@ -7,5 +7,8 @@ declare global {
 }
 
 window.changeTheDate = (date: Date) => {
-  useStore.setState({ time: JSON.stringify(date) })
+  date
+  throw new Error("unimplemented")
 }
+
+export default null

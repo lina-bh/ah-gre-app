@@ -1,12 +1,13 @@
 import { create } from "zustand"
-// import dayjs, { Dayjs } from "dayjs"
+import { devtools } from "zustand/middleware"
 import { reducedNorth, reducedSouth } from "./models/timetable"
-import { parseJSON } from "date-fns"
+import { Time, createTime } from "./models/time"
 
 interface Store {
   southbound: boolean
   stop: number
-  time: string
+  time: Time
+  date: Date
 }
 
 interface Actions {
@@ -15,24 +16,33 @@ interface Actions {
   timeRefreshed: () => void
 }
 
-export const useStore = create<Store & Actions>()((set) => ({
-  southbound: false,
-  stop: 0,
-  time: JSON.stringify(new Date()),
-  directionChanged: (southbound) =>
-    set(() => ({
-      southbound,
-    })),
-  stopChanged: (stop) =>
-    set(() => ({
-      stop,
-    })),
-  timeRefreshed: () => set(() => ({ time: JSON.stringify(new Date()) })),
-}))
+export const useStore = create<Store & Actions>()(
+  devtools((set) => {
+    const date = new Date()
+    return {
+      southbound: false,
+      stop: 0,
+      date,
+      time: createTime(date),
+      directionChanged: (southbound) =>
+        set(() => ({
+          southbound,
+        })),
+      stopChanged: (stop) =>
+        set(() => ({
+          stop,
+        })),
+      timeRefreshed: () => {
+        const date = new Date()
+        set(() => ({ date, time: createTime(date) }))
+      },
+    }
+  })
+)
 
 export const useCurrentTimetable = () => {
   const southbound = useStore((state) => state.southbound)
   return southbound ? reducedSouth : reducedNorth
 }
 
-export const useCurrentTime = () => parseJSON(useStore((state) => state.time))
+export const useCurrentTime = () => useStore((state) => state.time)

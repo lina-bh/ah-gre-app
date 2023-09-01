@@ -1,5 +1,3 @@
-import { formatDistance } from "date-fns"
-
 import { useCurrentTimetable, useCurrentTime, useStore } from "../zustand-store"
 import {
   getBusService,
@@ -8,8 +6,9 @@ import {
 } from "../models/timetable"
 import RefreshButton from "./RefreshButton"
 import ServiceRow from "./ServiceRow"
+import { timeToTimeInMins } from "../models/time"
 
-const arrivesTime = (service: Date[]) => {
+const arrivesTime = <T,>(service: T[]): T => {
   return service[service.length - 1]
 }
 
@@ -23,23 +22,23 @@ const Departures = () => {
     selectedStop,
     currentTime
   )!
-  const nextService = getBusService(timetable, nextServiceIndex, currentTime)
-  const servicesAfter = getBusServicesAfter(
-    timetable,
-    nextServiceIndex + 1,
-    currentTime
-  )
+  const nextService = getBusService(timetable, nextServiceIndex)
+  const servicesAfter = getBusServicesAfter(timetable, nextServiceIndex + 1)
+
+  const minutes = timeToTimeInMins(currentTime, nextService[selectedStop])
 
   return (
-    <div className="border-b dark:border-gray-800">
-      <h2 className="text-2xl">
-        Next uni bus in {formatDistance(nextService[selectedStop], currentTime)}{" "}
-        <RefreshButton />
-      </h2>
-      <ServiceRow
-        time={nextService[selectedStop]}
-        arrives={arrivesTime(nextService)}
-      />
+    <>
+      <div className="border-b dark:border-gray-800">
+        <h2 className="text-2xl">
+          Next uni bus in {minutes >= 60 ? "an hour" : `${minutes} minutes`}{" "}
+          <RefreshButton />
+        </h2>
+        <ServiceRow
+          time={nextService[selectedStop]}
+          arrives={arrivesTime(nextService)}
+        />
+      </div>
       {servicesAfter.length < 1 ? (
         <p className="pt-1">Last bus of the day</p>
       ) : (
@@ -55,7 +54,7 @@ const Departures = () => {
           ))}
         </>
       )}
-    </div>
+    </>
   )
 }
 

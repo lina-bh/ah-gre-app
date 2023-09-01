@@ -1,4 +1,4 @@
-import { useCurrentTimetable, useCurrentTime, useStore } from "../zustand-store"
+import { useCurrentTimetable, useStore } from "../zustand-store"
 import { hasNoService } from "../models/timetable"
 import DirectionTabs from "./DirectionTabs"
 import BusStopMenu from "./BusStopMenu"
@@ -10,14 +10,14 @@ import NoService from "./NoService"
 const App = () => {
   const timetable = useCurrentTimetable()
   const selectedStop = useStore((state) => state.stop)
-  const currentTime = useCurrentTime()
+  const currentDate = useStore((state) => state.date)
 
   // useEffect(() => {
   //   const timer = setInterval(() => refreshTime(), 90000)
   //   return () => clearInterval(timer)
   // }, [])
 
-  const noService = hasNoService(timetable, selectedStop, currentTime)
+  const noService = hasNoService(timetable, selectedStop, currentDate)
 
   return (
     <main className="flex flex-col h-full">

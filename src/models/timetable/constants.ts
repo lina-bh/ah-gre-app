@@ -1,4 +1,4 @@
-import { type Timetable } from "./interface"
+import { createTimetable, type Timetable } from "./interface"
 
 export enum Stop {
   AH = "Avery Hill",
@@ -8,7 +8,7 @@ export enum Stop {
   ELT = "Eltham High Street (stop L)",
 }
 
-export const reducedNorth: Timetable = {
+export const reducedNorth: Timetable = createTimetable({
   stops: [Stop.AH, Stop.FCN, Stop.GRE],
   times: [
     ["0800", "0803", "0840"],
@@ -22,8 +22,9 @@ export const reducedNorth: Timetable = {
     ["1630", "1633", "1655"],
     ["1715", "1718", "1745"],
   ],
-}
-export const reducedSouth: Timetable = {
+})
+
+export const reducedSouth: Timetable = createTimetable({
   stops: [Stop.GRE, Stop.ELW, Stop.ELT, Stop.AH],
   times: [
     ["0815", "0835", "0837", "0840"],
@@ -38,4 +39,4 @@ export const reducedSouth: Timetable = {
     ["1715", "1735", "1737", "1740"],
     ["1800", "1820", "1822", "1825"],
   ],
-}
+})

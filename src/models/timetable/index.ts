@@ -1,12 +1,8 @@
-import { parse, isBefore, isWeekend, isSameDay } from "date-fns"
-
 import { type Timetable } from "./interface"
 import bankHolidays from "../bank-holidays"
+import { type Time, createTime, timeIsBefore } from "../time"
 
 export const END_OF_SERVICE = null
-
-const parseTime = (time: string, refDate: Date): Date =>
-  parse(time, "HHmm", refDate)
 
 export enum ServiceStatus {
   RUNNING = 0,
@@ -14,36 +10,38 @@ export enum ServiceStatus {
   END_OF_SERVICE,
 }
 
-export const getBusService = (
-  timetable: Timetable,
-  index: number,
-  currentTime: Date
-): Date[] => timetable.times[index].map((time) => parseTime(time, currentTime))
+export const getBusService = (timetable: Timetable, index: number): Time[] =>
+  timetable.times[index]
 
 export const getBusServicesAfter = (
   timetable: Timetable,
-  startIndex: number,
-  currentTime: Date
-): Date[][] =>
-  timetable.times
-    .slice(startIndex)
-    .map((times) => times.map((time) => parseTime(time, currentTime)))
+  startIndex: number
+): Time[][] => timetable.times.slice(startIndex)
 
 export const findNextService = (
   timetable: Timetable,
   stop: number,
-  time: Date
+  time: Time
 ): number | null => {
-  const times = timetable.times.map(
-    (service) => () => parseTime(service[stop], time)
-  )
+  // linear search. it's fine honestly
+  const times = timetable.times.map((service) => service[stop])
   for (let i = 0; i < times.length; i++) {
-    if (isBefore(time, times[i]())) {
+    if (timeIsBefore(time, times[i])) {
       return i
     }
   }
   return null
 }
+
+const isWeekend = (date: Date): boolean => {
+  const day = date.getDay()
+  return day === 0 || day === 6
+}
+
+const isSameDay = (then: Date, now: Date): boolean =>
+  then.getDate() === now.getDate() &&
+  then.getMonth() === now.getMonth() &&
+  then.getFullYear() === now.getFullYear()
 
 export const hasNoService = (
   timetable: Timetable,
@@ -58,8 +56,8 @@ export const hasNoService = (
   }
 
   const allTimes = timetable.times.map((service) => service[stop])
-  const lastTime = parseTime(allTimes[allTimes.length - 1], now)
-  if (isBefore(lastTime, now)) {
+  const lastTime = allTimes[allTimes.length - 1]
+  if (timeIsBefore(lastTime, createTime(now))) {
     return ServiceStatus.END_OF_SERVICE
   }
 
