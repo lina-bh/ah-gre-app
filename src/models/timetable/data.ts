@@ -3,24 +3,11 @@ import useSWRImmutable from "swr/immutable"
 import { useStore } from "../../zustand-store"
 import { Timetable } from "."
 import { createTimetable } from "./interface"
-import reducedNorth from "../../assets/reducedNorth.json?url"
-import reducedSouth from "../../assets/reducedSouth.json?url"
-import northbound from "../../assets/northbound.json?url"
-import southbound from "../../assets/southbound.json?url"
 
 const urls = {
-  northbound,
-  southbound,
-  reducedNorth,
-  reducedSouth,
-}
-
-// const memory = {
-//   northbound: null,
-//   southbound: null,
-//   reducedNorth: null,
-//   reducedSouth: null,
-// }
+  northbound: "/northbound.json",
+  southbound: "/southbound.json",
+} as const
 
 export const fetchTimetable = async (name: string): Promise<Timetable> => {
   // if (memory[name]) {
