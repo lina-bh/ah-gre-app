@@ -11,7 +11,7 @@ const writeTimetableToJSON = async (
   timetable: timetableMod.Timetable
 ): Promise<void> => {
   const stringified = timetableMod.timetableToJSON(timetable)
-  await fs.writeFile(dir + `/../public/${name}.json`, stringified)
+  await fs.writeFile(dir + `/../src/assets/${name}.json`, stringified)
 }
 
 ;(async () => {
