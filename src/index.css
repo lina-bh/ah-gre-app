@@ -13,3 +13,8 @@ body,
 #root {
   @apply h-full;
 }
+
+.twitter-icon > svg {
+  display: inline;
+  margin-bottom: 3px;
+}

@@ -14,4 +14,4 @@ const stripped = {
   },
 }
 const outJSON = JSON.stringify(stripped)
-await writeFile(dir + "/src/assets/bank-holidays.json", outJSON)
+await writeFile(dir + "/../src/assets/bank-holidays.json", outJSON)

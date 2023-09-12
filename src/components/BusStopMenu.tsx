@@ -1,4 +1,5 @@
-import { useCurrentTimetable, useStore } from "../zustand-store"
+import { useStore } from "../zustand-store"
+import { useCurrentTimetable } from "../models/timetable/data"
 
 export default function BusStopMenu() {
   const currentStop = useStore((state) => state.stop)
@@ -10,7 +11,7 @@ export default function BusStopMenu() {
     stopChanged(stop)
   }
 
-  const stops = timetable.stops.slice(0, -1)
+  const stops = timetable ? timetable.stops.slice(0, -1) : []
 
   return (
     <select

@@ -1,19 +1,24 @@
-import { useCurrentTimetable, useCurrentTime, useStore } from "../zustand-store"
+import { useCurrentTime, useStore } from "../zustand-store"
 import {
   getBusService,
   getBusServicesAfter,
   findNextService,
+  Timetable,
 } from "../models/timetable"
 import RefreshButton from "./RefreshButton"
 import ServiceRow from "./ServiceRow"
 import { timeToTimeInMins } from "../models/time"
 
+interface DeparturesProps {
+  timetable: Timetable
+}
+
 const arrivesTime = <T,>(service: T[]): T => {
   return service[service.length - 1]
 }
 
-const Departures = () => {
-  const timetable = useCurrentTimetable()
+const Departures = (props: DeparturesProps) => {
+  const { timetable } = props
   const selectedStop = useStore((state) => state.stop)
   const currentTime = useCurrentTime()
 

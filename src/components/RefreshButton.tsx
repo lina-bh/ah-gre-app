@@ -8,8 +8,8 @@ export default function RefreshButton() {
   }
 
   return (
-    <button onClick={onClick}>
-      <i className="bi bi-arrow-clockwise"></i>
+    <button onClick={onClick} aria-label="Refresh">
+      &#x1F504;
     </button>
   )
 }

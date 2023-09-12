@@ -64,5 +64,7 @@ export const hasNoService = (
   return ServiceStatus.RUNNING
 }
 
+// TODO fix this for christmas
+// const isReduced = (day: Date): boolean => {}
+
 export { type Timetable } from "./interface"
-export { reducedNorth, reducedSouth } from "./constants"

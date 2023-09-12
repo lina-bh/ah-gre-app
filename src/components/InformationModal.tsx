@@ -1,76 +1,74 @@
-import { useState, ReactNode } from "react"
+/* eslint jsx-a11y/no-static-element-interactions: 0 */
+/* eslint jsx-a11y/click-events-have-key-events: 0 */
+// TODO sort this out
+import { useEffect, useRef } from "preact/hooks"
 
-interface InformationModal {
-  className: string
-  children: ReactNode
+interface InformationModalProps {
+  visible: boolean
+  onClose: () => void
 }
 
-export default function InformationModal(props: InformationModal) {
-  const [modalVisible, setModalVisible] = useState(false)
+const InformationBox = (props) => (
+  <div
+    onClick={(event) => event.stopPropagation()}
+    className="relative p-3 mx-auto bg-white border shadow-lg pointer-events-auto dark:border-gray-800 dark:bg-black dark:text-white rounded-xl dark:shadow-none"
+  >
+    <button type="button" onClick={props.onClose} className="float-right">
+      ╳
+    </button>
+    <p>This app was developed by Lina Bhaile (BSc Hons Computer Science)</p>
+    <p>
+      Contact{" "}
+      <a href="mailto:lb2894y@gre.ac.uk" className="text-blue-500">
+        lb2894y@gre.ac.uk
+      </a>
+    </p>
+    <p>No affiliation with the University of Greenwich or Centaur Travel</p>
+    <p>
+      <a href="https://github.com/lina-bh/ah-gre-app" className="text-blue-500">
+        Source code
+      </a>
+    </p>
+    <p>
+      <a
+        href="https://docs.gre.ac.uk/rep/ef/bus-timetable-avery-hill-greenwich"
+        className="text-blue-500"
+      >
+        Timetable
+      </a>{" "}
+      updated September 2023
+    </p>
+  </div>
+)
 
-  const onOpen = (event) => {
-    event.preventDefault()
-    setModalVisible(true)
-  }
+export default function InformationModal(props: InformationModalProps) {
+  const modalVisible = props.visible
+
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  useEffect(() => {
+    if (!dialogRef.current) {
+      return
+    }
+    if (modalVisible) {
+      dialogRef.current.showModal()
+    } else {
+      dialogRef.current.close()
+    }
+  }, [modalVisible])
 
   return (
-    <>
+    <dialog
+      ref={dialogRef}
+      onClose={props.onClose}
+      className="open:backdrop:bg-black/10 backdrop:transition-all"
+    >
       <div
-        onClick={() => setModalVisible(false)}
-        className={`fixed top-0 left-0 z-10 w-full h-full bg-white dark:bg-black transition-opacity duration-300 ${
-          !modalVisible ? "pointer-events-none opacity-0" : "opacity-60"
-        }`}
-      />
-      <div
-        className={`flex flex-col justify-center absolute top-0 left-0 z-20 h-full w-full p-6 transition-all duration-500 pointer-events-none ${
-          !modalVisible ? "-translate-y-full opacity-0" : ""
-        }`}
+        onClick={props.onClose}
+        className={`flex flex-col justify-center fixed top-0 left-0 z-10 h-full w-full p-6 transition-all duration-500`}
       >
-        <div className="relative p-3 mx-auto bg-white border shadow-lg pointer-events-auto dark:border-gray-800 dark:bg-black rounded-xl dark:shadow-none">
-          <button
-            type="button"
-            onClick={() => setModalVisible(false)}
-            className="float-right"
-          >
-            <i className="bi-x-lg" />
-          </button>
-          <p>
-            This app was developed by Lina Bhaile (BSc Hons Computer Science)
-          </p>
-          <p>
-            Contact{" "}
-            <a href="mailto:lb2894y@gre.ac.uk" className="text-blue-500">
-              lb2894y@gre.ac.uk
-            </a>
-          </p>
-          <p>
-            This app was not developed by and is not associated with the
-            University of Greenwich, Centaur Travel, Transport for London,
-            London Buses, Docklands Light Railway, SE Trains/Southeastern or
-            National Rail Enquiries.
-          </p>
-          <p>
-            <a
-              href="https://github.com/lina-bh/ah-gre-app"
-              className="text-blue-500"
-            >
-              Source code
-            </a>
-          </p>
-          <p>
-            <a
-              href="https://docs.gre.ac.uk/rep/ef/bus-timetable-avery-hill-greenwich"
-              className="text-blue-500"
-            >
-              Timetable
-            </a>{" "}
-            updated August 2023
-          </p>
-        </div>
+        <InformationBox onClose={props.onClose} />
       </div>
-      <button onClick={onOpen} className={props.className}>
-        {props.children}
-      </button>
-    </>
+    </dialog>
   )
 }
