@@ -3,8 +3,6 @@ import useSWRImmutable from "swr/immutable"
 import { useStore } from "../../zustand-store"
 import { Timetable } from "."
 import { createTimetable } from "./interface"
-import northboundURL from "../../assets/northbound.json?url"
-import southboundURL from "../../assets/southbound.json?url"
 
 // const resolvePublicURL = (path: string): string => {
 //   const url = new URL(path, import.meta.env.BASE_URL)
@@ -12,8 +10,8 @@ import southboundURL from "../../assets/southbound.json?url"
 // }
 
 const urls = {
-  northbound: northboundURL,
-  southbound: southboundURL,
+  northbound: import.meta.env.BASE_URL + "/northbound.json",
+  southbound: import.meta.env.BASE_URL + "/southbound.json",
 } as const
 
 export const fetchTimetable = async (name: string): Promise<Timetable> => {
